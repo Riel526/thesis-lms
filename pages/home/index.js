@@ -1,8 +1,18 @@
-import { useSession } from 'next-auth/client'
+import { useSession, getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
+export default async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req })
 
+  const userSubjects = await fetch(`${process.env.BASE_URL}/api/students/${session.user._id}`)
+
+  return {
+    props: {
+      userSubjects
+    }
+  }
+}
 
 const Home = () => {
 
