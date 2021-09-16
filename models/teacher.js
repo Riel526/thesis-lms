@@ -67,6 +67,10 @@ const schema = new mongoose.Schema({
 		ref: 'Section',
 		required: false,
 		trim: true,
+	},
+	role: {
+		type: String,
+		required: true,
 	}
 })
 

@@ -59,8 +59,6 @@ const Navbar = () => {
           <button className="w-10 p-2 rounded-full bg-WSAI-LightIndigo focus:outline-none focus:ring">
             <MessagesIcon className="w-6 h-6 stroke-current" />
           </button>
-
-
           <NavbarDropdown>
             <ChevronDownIcon className="w-4 h-4 stroke-current" />
           </NavbarDropdown>
