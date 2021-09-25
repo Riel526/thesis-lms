@@ -2,6 +2,19 @@ const mongoose = require('mongoose')
 
 const MODEL_NAME = 'Teacher'
 
+const subjectSchema = new mongoose.Schema({
+	subjectid: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Subject',
+		required: true,
+	},
+	sectionid: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Section',
+		required: true,
+	}
+})
+
 const schema = new mongoose.Schema({
 	image: {
 		type: String,
@@ -41,11 +54,13 @@ const schema = new mongoose.Schema({
 		type: String,
 		required: true,
 		trim: true,
+		index: { unique: true }
 	},
 	email: {
 		type: String,
 		required: true,
 		trim: true,
+		index: { unique: true }
 	},
 	password: {
 		type: String,
@@ -53,15 +68,11 @@ const schema = new mongoose.Schema({
 		trim: true,
 		minLength: 6,
 	},
-	subjects: [
-		{
-			//Array of document IDS of subjects
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Subject',
-			required: false,
-			trim: true,
-		},
-	],
+	subjects: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Subject',
+		required: false,
+	}],
 	advisorySection: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Section',

@@ -16,7 +16,7 @@ const NavbarDropdown = (props) => {
 
   return (
     <Menu as='div' className=''>
-      <Menu.Button className='flex items-center justify-center w-10 p-3 rounded-full bg-WSAI-LightIndigo focus:outline-none focus:ring'>
+      <Menu.Button className='flex items-center justify-center w-10 p-3 rounded-full bg-WSAI-Indigo-400 focus:outline-none focus:ring'>
         {props.children}
       </Menu.Button>
       <Transition
@@ -27,19 +27,19 @@ const NavbarDropdown = (props) => {
         leaveFrom='opacity-100'
         leaveTo='opacity-0'
       >
-        <Menu.Items className='absolute mt-4 overflow-hidden divide-y divide-gray-100 rounded-lg shadow-lg right-7 w-52 bg-WSAI-White text-WSAI-Indigo ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        <Menu.Items className='absolute mt-10 overflow-hidden divide-y divide-gray-100 rounded-lg shadow-lg xl:mt-4 right-7 w-52 bg-WSAI-Indigo-25 text-WSAI-Indigo-500 ring-1 ring-black ring-opacity-5 focus:outline-none'>
           <Menu.Item>
             {({ active }) => (
               <Link href='/account-settings'>
                 <a
                   className={`${active &&
-                    'bg-WSAI-Indigo text-WSAI-White'} group flex items-center px-4 py-2 text-sm transition-colors gap-x-4 hover:bg-WSAI-Indigo hover:text-WSAI-White`}
+                    'bg-WSAI-Indigo-500 text-WSAI-Indigo-25'} group flex items-center px-4 py-2 text-sm transition-colors gap-x-4 hover:bg-WSAI-Indigo-500 hover:text-WSAI-Indigo-25`}
 
                 >
                   <SettingIcon
-                    className={`w-4 h-4 transition-colors fill-current group-hover:text-WSAI-White ${active
-                      ? 'text-WSAI-White'
-                      : 'text-WSAI-Indigo'}`}
+                    className={`w-4 h-4 transition-colors fill-current group-hover:text-WSAI-Indigo-25 ${active
+                      ? 'text-WSAI-Indigo-25'
+                      : 'text-WSAI-Indigo-500'}`}
                   />
                   Account Settings
                 </a>
@@ -52,13 +52,13 @@ const NavbarDropdown = (props) => {
                 {({ active }) => (
                   <button
                     className={`${active &&
-                      'bg-WSAI-Indigo text-WSAI-White'} group flex items-center px-4 py-2 text-sm w-full transition-colors gap-x-4`}
+                      'bg-WSAI-Indigo-500 text-WSAI-Indigo-25'} group flex items-center px-4 py-2 text-sm w-full transition-colors gap-x-4`}
                     onClick={e => handleSignout(e)}
                   >
                     <SignOutIcon
-                      className={`w-5 h-4 transition-colors fill-current group-hover:text-WSAI-White ${active
-                        ? 'text-WSAI-White'
-                        : 'text-WSAI-Indigo'}`}
+                      className={`w-5 h-4 transition-colors fill-current group-hover:text-WSAI-Indigo-25 ${active
+                        ? 'text-WSAI-Indigo-25'
+                        : 'text-WSAI-Indigo-500'}`}
                     />
                     Logout
                   </button>

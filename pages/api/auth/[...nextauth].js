@@ -37,14 +37,28 @@ export default NextAuth({
         if (!isValid) {
           throw new Error('Invalid Password')
         }
-        console.log(user)
-        return {
-          _id: user._id,
-          role: user.role,
-          name: user.firstName,
-          email: user.email,
-          image: user.image,
+
+        if (credentials.type == 'student') {
+          return {
+            _id: user._id,
+            name: user.firstName,
+            email: user.email,
+            image: user.image,
+            section: user.section,
+            role: user.role,
+          }
+        } else if (credentials.type == 'teacher') {
+          return {
+            _id: user._id,
+            name: user.firstName,
+            email: user.email,
+            image: user.image,
+            section: user.advisorySection,
+            subjects: user.subjects,
+            role: user.role,
+          }
         }
+
       }
     })
   ],

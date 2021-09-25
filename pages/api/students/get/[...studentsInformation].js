@@ -9,11 +9,6 @@ const handler = createHandler()
 
 handler.get(async (req, res) => {
 
-  //SAMPLE LINK
-  //where document = student and values to select are firstName and lastName
-  //where subdocument = section and value/s to select is subjects
-  //BASE_URL/api/students/get/firstName,lastName,image?getSubDocument=subjects
-
   const documentKeys = req.query.studentInformation.map((info) => info.split(','))
 
   const selectSubdocumentKeys = req.query.getSubDocument.replaceAll(',', ' ')

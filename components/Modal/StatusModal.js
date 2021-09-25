@@ -27,7 +27,7 @@ export default function StatusModal({ setModalAttributes, customMessage, status,
         <Dialog.Overlay className='fixed inset-0 z-10 flex text-center transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80' />
 
         <div
-          className={`relative z-50 bg-WSAI-White text-WSAI-JetBlack flex flex-col justify-center w-full max-w-xs overflow-hidden rounded-md duration-500 ease-in-out shadow p-4`}
+          className={`relative z-50 bg-WSAI-Indigo-25 text-WSAI-JetBlack flex flex-col justify-center w-full max-w-xs overflow-hidden rounded-md duration-500 ease-in-out shadow p-4`}
         >
           <div className='flex flex-col items-center justify-center h-28 max-h-28'>
             {status == 'error' && (

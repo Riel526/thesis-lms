@@ -10,11 +10,9 @@ const schema = new mongoose.Schema({
   },
   sections: [
     {
-      //Array of document IDS of sections
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Section',
       required: false,
-      trim: true,
     },
   ],
 })

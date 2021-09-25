@@ -9,12 +9,7 @@ const handler = createHandler()
 
 handler.get(async (req, res) => {
 
-  //SAMPLE LINK
-  //where document = student and values to select are firstName and lastName
-  //where subdocument = section and value/s to select is subjects
-  //BASE_URL/api/students/get/firstName,lastName,image?getSubDocument=subjects
-
-  const documentKeys = req.query.sectiontInformation.map((info) => info.split(','))
+  const documentKeys = req.query.sectionInformation.map((info) => info.split(','))
 
   const selectSubdocumentKeys = req.query.getSubDocument.replaceAll(',', ' ')
 
@@ -23,8 +18,8 @@ handler.get(async (req, res) => {
   const sectionId = documentKeys[0].toString()
 
   try {
-    const students = await Student.find({ _id: sectionId }, `${selectDocumentKeys}`).populate('section gradeLevel', `${selectSubdocumentKeys}`)
-    res.status(200).json({ message: 'success', data: jsonify(students) })
+    const section = await Section.findOne({ _id: sectionId }, `${selectDocumentKeys}`).populate('subjects advisor', `${selectSubdocumentKeys}`)
+    res.status(200).json({ message: 'success', data: jsonify(section) })
   } catch (err) {
     res.status(400).json({ message: 'failed', error: err })
   }

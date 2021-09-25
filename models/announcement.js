@@ -22,4 +22,4 @@ const schema = new mongoose.Schema({
 
 module.exports =
   mongoose.models[MODEL_NAME] ||
-  mongoose.model(MODEL_NAME, schema, 'announcements')
+  mongoose.model(MODEL_NAME, schema, 'lms-announcements')
