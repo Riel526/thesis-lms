@@ -2,104 +2,38 @@ const mongoose = require("mongoose");
 
 const MODEL_NAME = "Subject";
 
-const subjectAnnouncementSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  start: {
-    type: Date,
-    required: true,
-    trim: true,
-  },
-  description: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  comments: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Comment',
-    required: false,
-  }
-})
-
 const attendanceSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
   },
-  present: {
+  present: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: false,
-  },
-  late: {
+  }],
+  late: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: false,
-  },
-  absent: {
+  }],
+  absent: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: false,
-  },
-  excused: {
+  }],
+  excused: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: false,
-  }
-})
-
-
-const moduleSchema = new mongoose.Schema({
-  image: {
-    type: String,
-    required: false,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  moduleName: {
-    type: String,
-    required: true,
-  },
-  moduleDescription: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  link: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  attachedFiles: {
-    type: mongoose.Schema.Types.Mixed,
-    required: false
-  },
-  period: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
-  isLocked: {
-    type: Boolean,
-    required: true,
-  },
-  isHidden: {
-    type: Boolean,
-    required: true,
-  }
+  }]
 })
 
 const schema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Subject',
     required: true,
+    auto: true,
   },
   image: {
     type: String,
@@ -121,7 +55,8 @@ const schema = new mongoose.Schema({
     required: false,
   },
   modules: [{
-    type: moduleSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Module',
     required: false,
   }],
   tasks: [{
@@ -139,7 +74,8 @@ const schema = new mongoose.Schema({
     required: false,
   }],
   announcements: [{
-    type: subjectAnnouncementSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Announcement',
     required: false,
   }],
   students: [{

@@ -1,19 +1,16 @@
-import { getSession } from 'next-auth/client'
+import { getSession, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import React from 'react'
-import styles from '../../styles/UserProfile.module.css'
+import styles from '../../../styles/UserProfile.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import FilledButton from './../../components/Buttons/FilledButton'
+import FilledButton from '../../../components/Buttons/FilledButton'
 
 export async function getServerSideProps(context) {
-  const session = await getSession({ req: context.req })
-  let userType = session.user.role
-
-  const { userId } = context.query
+  const { student } = context.query
 
   const userInformation = await fetch(
-    `${process.env.BASE_URL}/api/${userType}s/get/specific-record/${userId}`
+    `${process.env.BASE_URL}/api/students/${student}`
   )
     .then((res) => res.json())
     .then((json) => json.data)
@@ -27,6 +24,9 @@ export async function getServerSideProps(context) {
 
 const UserProfile = (props) => {
   const router = useRouter()
+
+  const [session, loading] = useSession()
+  console.log(props.userInformation)
 
   return (
     <div className={` ${styles.BoxBG}`}>
@@ -57,7 +57,7 @@ const UserProfile = (props) => {
                   router.query.tab == 'Introduction' || router.query.tab == null
                     ? 'border-WSAI-Indigo-500'
                     : 'border-transparent'
-                } border-b-2`}
+                } border-b-2 focus:ring focus:outline-none`}
               >
                 Introduction
               </a>
@@ -68,7 +68,7 @@ const UserProfile = (props) => {
                   router.query.tab == 'Information'
                     ? 'border-WSAI-Indigo-500'
                     : 'border-transparent'
-                } border-b-2`}
+                } border-b-2 focus:ring focus:outline-none`}
               >
                 Information
               </a>
@@ -77,14 +77,18 @@ const UserProfile = (props) => {
           <div className="flex items-center gap-x-2">
             <FilledButton
               transition={
-                'before:w-0 hover:before:w-full before:h-1 before:bottom-0 before:left-0 before:bg-WSAI-Orange before:absolute before:transition-[width] before:duration-200'
+                'before:w-0 hover:before:w-full before:h-1 before:bottom-0 before:left-0 before:bg-WSAI-Orange-500 before:absolute before:transition-[width] before:duration-200'
               }
             >
               Send Message
             </FilledButton>
           </div>
         </div>
-        <div className="flex-1 h-full p-4 mx-16 my-10 rounded-lg bg-WSAI-Indigo-900 backdrop-blur-sm bg-opacity-10"></div>
+        <div className="flex-1 h-full p-4 mx-16 my-10 rounded-lg bg-WSAI-Indigo-900 backdrop-blur-sm bg-opacity-10">
+          {!loading && session.user._id == router.query.userId && (
+            <textarea className="bg-red-400 focus:outline-none focus:ring" name="introduction" id="Introduction"></textarea>
+          )}
+        </div>
       </div>
     </div>
   )

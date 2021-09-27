@@ -7,7 +7,7 @@ const NavbarLink = ({ href, basePath, children }) => {
 
   return (
     <Link href={href}>
-      <a tabIndex={0} className={`contents ${router.pathname.includes(basePath) == true ? 'text-WSAI-Orange' : 'text-WSAI-Indigo-25'} transition-colors hover:text-WSAI-Orange focus:text-WSAI-Orange`}>{children}</a>
+      <a className={`${router.pathname.includes(basePath) == true ? 'text-WSAI-Orange-500' : 'text-WSAI-Indigo-25'} focus:outline-none flex justify-center transition-colors hover:text-WSAI-Orange-500 focus:text-WSAI-Orange-300`}>{children}</a>
     </Link>
   )
 }

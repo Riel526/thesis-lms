@@ -3,6 +3,11 @@ const mongoose = require('mongoose')
 const MODEL_NAME = 'Event'
 
 const schema = new mongoose.Schema({
+	_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    auto: true,
+  },
 	title: {
 		type: String,
 		required: true,

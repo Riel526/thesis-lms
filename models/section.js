@@ -1,8 +1,13 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
-const MODEL_NAME = "Section"
+const MODEL_NAME = 'Section'
 
 const schema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    auto: true,
+  },
   sectionName: {
     type: String,
     required: true,
@@ -12,28 +17,28 @@ const schema = new mongoose.Schema({
   subjects: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Subject",
+      ref: 'Subject',
       required: true,
     },
   ],
   gradeLevel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "GradeLevel",
+    ref: 'GradeLevel',
     required: true,
   },
   advisor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Teacher",
+    ref: 'Teacher',
     required: true,
   },
   students: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Student",
+      ref: 'Student',
       required: false,
     },
   ],
 })
 
 module.exports =
-  mongoose.models[MODEL_NAME] || mongoose.model(MODEL_NAME, schema, "sections")
+  mongoose.models[MODEL_NAME] || mongoose.model(MODEL_NAME, schema, 'sections')

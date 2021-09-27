@@ -1,18 +1,14 @@
-import createHandler from '../../../../../middlewares/index'
-import Subject from '../../../../../models/subject'
-import Students from '../../../../../models/student'
-import Section from '../../../../../models/section'
-import Teacher from '../../../../../models/teacher'
-import { jsonify } from '../../../../../utils/db'
+import createHandler from '../../../middlewares/index'
+import Subject from '../../../models/subject'
+import Students from '../../../models/student'
+import Section from '../../../models/section'
+import Teacher from '../../../models/teacher'
+import { jsonify } from '../../../utils/db'
 
 const handler = createHandler()
 
 handler.get(async (req, res) => {
-  const documentKeys = req.query.subjectInformation.map((info) =>
-    info.split(',')
-  )
-
-  const subjectId = documentKeys[0].toString()
+  const { subjectId } = req.query
 
   try {
     const subjects = await Subject.findOne({ _id: subjectId })

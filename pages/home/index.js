@@ -1,9 +1,9 @@
-import { useSession, getSession } from "next-auth/client"
-import { useRouter } from "next/router"
-import Head from "next/head"
-import Link from "next/link"
-import Image from "next/image"
-import { SubjectPageIcon } from "../../components/Icons/Icons"
+import { useSession, getSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
+import Link from 'next/link'
+import Image from 'next/image'
+import { SubjectPageIcon } from '../../components/Icons/Icons'
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req })
@@ -12,26 +12,16 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         permanent: false,
-        destination: "/",
+        destination: '/',
       },
     }
   }
 
-  let userSubjects = null
-
-  if (session.user.role == "student") {
-    userSubjects = await fetch(
-      `${process.env.BASE_URL}/api/students/get/specific-record/${session.user._id}/section,_id?sectionName,_id,image`
-    )
-      .then((res) => res.json())
-      .then((json) => json.data)
-  } else if (session.user.role == "teacher") {
-    userSubjects = await fetch(
-      `${process.env.BASE_URL}/api/teachers/get/specific-record/${session.user._id}`
-    )
-      .then((res) => res.json())
-      .then((json) => json.data)
-  }
+  const userSubjects = await fetch(
+    `${process.env.BASE_URL}/api/${session.user.role}s/${session.user._id}`
+  )
+    .then((res) => res.json())
+    .then((json) => json.data)
 
   return {
     props: {
@@ -46,7 +36,7 @@ const Home = (props) => {
   const router = useRouter()
 
   if (!loading && !session) {
-    router.replace("/")
+    router.replace('/')
   }
 
   return (
@@ -55,7 +45,7 @@ const Home = (props) => {
         <title>Home</title>
       </Head>
 
-      <div className="grid justify-center w-full h-full grid-cols-3 col-span-8 p-4 bg-WSAI-Indigo-25">
+      <div className="grid justify-center w-full h-full grid-cols-3 col-span-8 p-4 bg-WSAI-Indigo-25 ">
         {props.userSubjects.subjects.map((userSubject) => {
           return (
             <div

@@ -4,7 +4,7 @@ const BorderedButton = (props) => {
   return (
     <button
       onClick={props.onClick}
-      className={`${
+      className={` ${props.className && props.className} ${
         props.colors
           ? props.colors
           : 'hover:bg-WSAI-Indigo-500 hover:text-WSAI-Indigo-25 focus:bg-WSAI-Indigo-500 focus:text-WSAI-Indigo-25 border-WSAI-Indigo-500 text-WSAI-Indigo-500'

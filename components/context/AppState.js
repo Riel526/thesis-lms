@@ -5,9 +5,8 @@ import AppReducer from './AppReducer'
 import { useRouter } from 'next/router'
 
 const AppState = ({ children }) => {
-
-
 	const router = useRouter()
+	const controller = new AbortController()
 
 	const initialState = {
 		selectedStudents: [],
@@ -25,6 +24,7 @@ const AppState = ({ children }) => {
 	}
 
 	const [state, dispatch] = useReducer(AppReducer, initialState)
+	
 
 	const refreshData = () => {
 		router.replace(router.asPath)

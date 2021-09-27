@@ -22,11 +22,13 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 z-30 w-full shadow">
+
       <div className="grid w-full h-16 grid-cols-12 bg-WSAI-Indigo-500 text-WSAI-Indigo-25">
+
         <div className="flex items-center col-span-2 px-4 gap-x-3">
           <Link href="/home">
             <a>
-              <figure className="relative w-10 h-12 cursor-pointer">
+              <figure className="relative w-10 h-12 cursor-pointer focus:outline-none focus:ring">
                 <Image src="/logo.png" alt="wsai logo" layout="fill" />
               </figure>
             </a>
@@ -57,17 +59,17 @@ const Navbar = () => {
 
         <div className="flex items-center justify-end col-span-2 px-4 gap-x-3">
           <div className="flex flex-col text-right">
-            <Link href={`/user/${session.user._id}`}>
-              <a className="text-sm">{session && session.user.name}</a>
+            <Link href={`/user/${session.user.role}/${session.user._id}`}>
+              <a className="text-sm focus:outline-none focus:ring">{session && session.user.name}</a>
             </Link>
-            <Link href={`/user/${session.user._id}`}>
-              <a className="text-xs first-letter:uppercase">
+            <Link href={`/user/${session.user.role}/${session.user._id}`}>
+              <a className="text-xs first-letter:uppercase focus:outline-none focus:ring">
                 {session && session.user.role}
               </a>
             </Link>
           </div>
-          <Link href={`/user/${session.user._id}`}>
-          <a className="flex items-center justify-center w-10 overflow-hidden rounded-full shadow bg-WSAI-Indigo-400">
+          <Link href={`/user/${session.user.role}/${session.user._id}`}>
+          <a className="flex items-center justify-center w-10 overflow-hidden rounded-full shadow bg-WSAI-Indigo-400 focus:outline-none focus:ring">
             <figure className="relative w-10 h-10">
               <Image
                 objectFit="cover"
