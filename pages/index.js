@@ -174,26 +174,6 @@ export default function Login() {
                 <input
                   type="radio"
                   name="type"
-                  id="teacher"
-                  className={`w-3 relative h-3 rounded-full appearance-none border border-WSAI-Indigo-500 flex items-center justify-center ${
-                    loginDetails.type == 'teacher' &&
-                    'before:rounded-full before:w-1.5 before:h-1.5 before:bg-WSAI-Indigo-500'
-                  }`}
-                  onClick={(e) =>
-                    setLoginDetails((prevState) => ({
-                      ...prevState,
-                      type: 'teacher',
-                    }))
-                  }
-                />
-                <label className="text-sm text-WSAI-Indigo-500" htmlFor="teacher" value="teacher">
-                  Teacher
-                </label>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <input
-                  type="radio"
-                  name="type"
                   id="student"
                   className={`w-3 relative h-3 rounded-full appearance-none border border-WSAI-Indigo-500 flex items-center justify-center ${
                     loginDetails.type == 'student' &&
@@ -206,8 +186,36 @@ export default function Login() {
                     }))
                   }
                 />
-                <label className="text-sm text-WSAI-Indigo-500" htmlFor="seacher" value="student">
+                <label
+                  className="text-sm text-WSAI-Indigo-500"
+                  htmlFor="seacher"
+                  value="student"
+                >
                   Student
+                </label>
+              </div>
+              <div className="flex items-center gap-x-2">
+                <input
+                  type="radio"
+                  name="type"
+                  id="teacher"
+                  className={`w-3 relative h-3 rounded-full appearance-none border border-WSAI-Indigo-500 flex items-center justify-center ${
+                    loginDetails.type == 'teacher' &&
+                    'before:rounded-full before:w-1.5 before:h-1.5 before:bg-WSAI-Indigo-500'
+                  }`}
+                  onClick={(e) =>
+                    setLoginDetails((prevState) => ({
+                      ...prevState,
+                      type: 'teacher',
+                    }))
+                  }
+                />
+                <label
+                  className="text-sm text-WSAI-Indigo-500"
+                  htmlFor="teacher"
+                  value="teacher"
+                >
+                  Teacher
                 </label>
               </div>
             </div>

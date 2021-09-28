@@ -2,19 +2,11 @@ const mongoose = require('mongoose')
 
 const MODEL_NAME = 'Module'
 
-const moduleSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     auto: true,
-  },
-  image: {
-    type: String,
-    required: false,
-  },
-  type: {
-    type: String,
-    required: true,
   },
   moduleTitle: {
     type: String,
@@ -33,23 +25,17 @@ const moduleSchema = new mongoose.Schema({
   },
   link: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
   },
-  attachedFiles: [
-    {
-      type: mongoose.Schema.Types.Mixed,
-      required: false,
-    },
-  ],
-  period: {
-    type: Number,
+  attachedFile: {
+    type: mongoose.Schema.Types.Mixed,
+    required: false,
+  },
+  moduleQuarter: {
+    type: String,
     required: true,
     trim: true,
-  },
-  isLocked: {
-    type: Boolean,
-    required: true,
   },
   isHidden: {
     type: Boolean,
@@ -63,7 +49,6 @@ const moduleSchema = new mongoose.Schema({
     },
   ],
 })
-
 
 module.exports =
   mongoose.models[MODEL_NAME] || mongoose.model(MODEL_NAME, schema, 'modules')

@@ -36,6 +36,27 @@ export const WebsiteIcon = (props) => {
   )
 }
 
+export const CameraIcon = (props) => {
+  return (
+    <svg className={props.className} viewBox="0 0 20 20">
+  <path fillRule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+    </svg>
+  )
+}
+
+export const UploadFileIcon = (props) => {
+  return (
+    <svg className={props.className} fill="none" viewBox="0 0 24 24">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+      />
+    </svg>
+  )
+}
+
 export const SectionIcon = (props) => {
   return (
     <svg className={props.className} viewBox="0 0 20 20">

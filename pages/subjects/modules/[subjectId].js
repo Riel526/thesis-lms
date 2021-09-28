@@ -36,7 +36,7 @@ const Overview = (props) => {
       <Head>
         <title>Modules - {props.subjectInformation.subjectName}</title>
       </Head>
-      <AddModuleModal isOpen={isOpen} setIsOpen={setIsOpen}/> 
+      <AddModuleModal subjectId={props.subjectInformation._id}  isOpen={isOpen} setIsOpen={setIsOpen}/> 
 
       <div className="flex flex-col w-full h-full col-span-12 bg-WSAI-Indigo-25">
         <header className="col-span-3 h-60">
@@ -76,7 +76,7 @@ const Overview = (props) => {
             </div>
             <div className="flex mt-3 gap-x-2">
               <ViewAllButton />
-              <FilledButton onClick={() => setIsOpen(true)} className="font-bold" icon={<AddIcon className="w-5 h-5 fill-current" />}>Add Announcement</FilledButton>
+              <FilledButton onClick={() => setIsOpen(true)} className="font-bold" icon={<AddIcon className="w-5 h-5 fill-current" />}>Add Module</FilledButton>
             </div>
           </section>
           <ButtonGroup />

@@ -10,6 +10,11 @@ const AppReducer = (state, action) => {
           ...action.payload,
         },
       }
+    case ACTIONS.SET_MODULE_FILE:
+      return {
+        ...state,
+        moduleFile: action.payload,
+      }
     default:
       return state
   }

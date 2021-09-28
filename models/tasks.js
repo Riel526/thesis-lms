@@ -88,8 +88,8 @@ const schema = new mongoose.Schema({
       required: true,
     },
   ],
-  period: {
-    type: Number,
+  quarter: {
+    type: String,
     required: true,
     trim: true,
   },

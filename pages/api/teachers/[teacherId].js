@@ -30,13 +30,13 @@ handler.get(async (req, res) => {
 handler.patch(async (req, res) => {
   const { teacherId, password } = req.query
   try {
-    console.log(req.body.introduction)
-    await Teacher.findOneAndUpdate(
-      { _id: teacherId },
-      {
-        introduction: req.body.introduction,
-      }
-    )
+    const teacher = await Teacher.findOne({ _id: teacherId })
+
+    if (req.body.introduction) teacher.introduction = req.body.introduction
+    if (req.body.image)teacher.image = req.body.image
+
+    teacher.save()
+
     res.status(200).json({ message: 'success' })
   } catch (err) {
     console.log(err)
