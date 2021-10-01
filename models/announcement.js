@@ -23,28 +23,11 @@ const schema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  comments: [
-    {
-      _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        auto: true,
-      },
-      commentedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-      },
-      date: {
-        type: Date,
-        required: true,
-      },
-      content: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-    },
-  ],
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+    required: false,
+  }],
   subject: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Subject',

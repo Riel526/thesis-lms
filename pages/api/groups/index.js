@@ -17,30 +17,44 @@ handler.get(async (req, res) => {
 
 handler.post(async (req, res) => {
   const { role } = req.query
+
+  let memberStudents = [...req.body.studentMembers]
+  let memberTeachers = [...req.body.teacherMembers]
+
+  if (role == 'student')
+    memberStudents = [...memberStudents, req.body.createdBy]
+
+  if (role == 'teacher')
+    memberTeachers = [...memberTeachers, req.body.createdBy]
+
   try {
     const group = await Group.create({
       image: req.body.attachedFile,
       groupName: req.body.groupName,
       inviteCode: req.body.inviteCode,
-      createdBy: req.body.createdBy,
-      members: [...req.body.members, req.body.createdBy],
+      createdByStudent: role == 'student' ? req.body.createdBy : null,
+      createdByTeacher: role == 'teacher' ? req.body.createdBy : null,
+      membersTeacher: memberTeachers,
+      membersStudent: memberStudents,
     })
 
-    if (role == 'student') {
-      await Student.findOneAndUpdate(
-        { _id: req.body.createdBy },
-        {
-          $addToSet: { groups: group },
-        }
-      )
-    } else if (role == 'teacher') {
+    memberTeachers.map(async (teacher) => {
       await Teacher.findOneAndUpdate(
-        { _id: req.body.createdBy },
+        { _id: teacher._id },
         {
           $addToSet: { groups: group },
         }
       )
-    }
+    })
+
+    memberStudents.map(async (student) => {
+      await Student.findOneAndUpdate(
+        { _id: student._id },
+        {
+          $addToSet: { groups: group },
+        }
+      )
+    })
 
     res.status(200).json({ message: 'success' })
   } catch (err) {

@@ -24,7 +24,8 @@ handler.get(async (req, res) => {
       }).populate({
         path: 'lockerFiles'
       }).populate({
-        path: 'groups'
+        path: 'groups',
+        select: '_id image groupName'
       })
 
     res.status(200).json({ message: 'success', data: jsonify(teachers) })

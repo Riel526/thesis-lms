@@ -47,7 +47,8 @@ export async function getServerSideProps(context) {
     return options.filter((option) => option != null)
   }
 
-  const options = [...getOptions(teachers), ...getOptions(students)]
+  const teacherOptions = [...getOptions(teachers)]
+  const studentOptions = [...getOptions(students)]
 
   const userInformation = await fetch(
     `${process.env.BASE_URL}/api/teachers/${teacherId}`
@@ -58,7 +59,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       userInformation,
-      options,
+      teacherOptions,
+      studentOptions,
       session,
     },
   }
@@ -66,34 +68,33 @@ export async function getServerSideProps(context) {
 
 const UserGroups = (props) => {
   const router = useRouter()
+  const { teacherId } = router.query
+  const { groupId } = router.query
 
   const { setModalAttributes, uploadFiles } = useContext(AppContext)
   const [groupInformation, setGroupInformation] = useState({})
   const [isOpen, setIsOpen] = useState(false)
   const [isJoinGroup, setIsJoinGroup] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState('')
-  const isMounted = useRef(true)
 
-  useEffect(() => {
-    const getUpdatedGroupData = async () => {
-      await fetch(`${process.env.BASE_URL}/api/groups/${selectedGroup}`)
-        .then((res) => res.json())
-        .then((json) => console.log(json.data))
-    }
-    if (isMounted.current) {
-      isMounted.current = false
-    } else {
-      const result = getUpdatedGroupData()
-      console.log(result)
-      console.log(groupInformation)
-      setGroupInformation(result)
-    }
-  }, [selectedGroup])
+  const currentPath = `/groups/teacher/${teacherId}`
+
+  const fetchGroupInformation = async (groupId) => {
+    console.log(groupInformation)
+    const groupInformation = await fetch(
+      `${process.env.BASE_URL}/api/groups/${groupId}`
+    )
+      .then((res) => res.json())
+      .then((json) => json.data)
+
+    setGroupInformation(groupInformation)
+  }
 
   return (
     <div className="grid w-full grid-cols-4 bg-WSAI-Indigo-25 text-WSAI-JetBlack">
       <SchoolGroupModal
-        options={props.options}
+        teacherOptions={props.teacherOptions}
+        studentOptions={props.studentOptions}
         isJoinGroup={isJoinGroup}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -106,13 +107,16 @@ const UserGroups = (props) => {
         {props.userInformation.groups.map((group) => {
           return (
             <div
-              onClick={() => setSelectedGroup(group._id)}
+              onClick={() => {
+                setGroupInformation(fetchGroupInformation(group._id))
+              }}
               tabIndex={0}
               key={group._id}
               className={`${
-                groupInformation._id == group._id &&
-                'bg-WSAI-Indigo-500 text-WSAI-Indigo-25'
-              } flex flex-col items-center justify-center w-48 h-48 rounded-md cursor-pointer bg-WSAI-Indigo-100 gap-y-2 focus:outline-none focus:ring`}
+                groupInformation._id == group._id
+                  ? 'shadow-md bg-indigo-100 transition-shadow'
+                  : 'bg-WSAI-Indigo-100'
+              } flex flex-col items-center justify-center w-48 h-48  rounded-md cursor-pointer  gap-y-2 focus:outline-none focus:ring`}
             >
               <figure className="relative w-24 h-24 overflow-hidden rounded-md">
                 <Image src={group.image} alt="group" layout="fill" />
@@ -144,7 +148,12 @@ const UserGroups = (props) => {
             </FilledButton>
           </div>
         </header>
-        <div className="grid">{}</div>
+        <div className="grid p-4">
+          <textarea maxLength={800} className="w-full max-h-[10rem] min-h-[10rem] rounded-t-md bg-WSAI-Indigo-100 p-2 resize-none focus:outline-none focus:ring focus:ring-inset">
+              
+          </textarea>
+          <FilledButton className="rounded-t-none">Add Post</FilledButton>
+        </div>
       </main>
     </div>
   )

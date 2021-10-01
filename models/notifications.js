@@ -20,11 +20,16 @@ const schema = new mongoose.Schema({
       return new Date(new Date().valueOf() + 60000)
     },
   },
-  userId: {
+  ownerTeacher: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student' || 'Teacher',
-    required: true,
-  },
+    ref: 'Teacher',
+    required: false,
+  }],
+  ownerStudent: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: false,
+  }],
 })
 
 module.exports =

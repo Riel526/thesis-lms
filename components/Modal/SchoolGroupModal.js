@@ -10,26 +10,20 @@ export default function CreateGroupModal({
   setIsOpen,
   isOpen,
   isJoinGroup,
-  options,
+  teacherOptions,
+  studentOptions,
   uploadFiles,
-  session
+  session,
 }) {
   const [groupDetails, setGroupDetails] = useState({
     image: null,
     groupName: '',
-    members: [],
+    studentMembers: [],
+    teacherMembers: [],
     inviteCode: '',
   })
 
   const [tempImage, setTempImage] = useState()
-
-  
-  useEffect(() => {
-    return(() => {
-      resetFields()
-    })
-  }, [])
-
 
   const handleChange = (e) => {
     const key = e.target.name
@@ -41,18 +35,33 @@ export default function CreateGroupModal({
     }))
   }
 
-  const handleSelectMember = (selectedItem) => {
+  const handleSelectStudent = (selectedItem) => {
     setGroupDetails((prevState) => ({
       ...prevState,
-      members: [...prevState.members, selectedItem._id],
+      studentMembers: [...prevState.studentMembers, selectedItem._id],
     }))
-
   }
 
-  const handleDiselectMember = (selectedItem) => {
+  const handleDiselectStudent = (selectedItem) => {
     setGroupDetails((prevState) => ({
       ...prevState,
-      members: prevState.members.filter(
+      studentMembers: prevState.studentMembers.filter(
+        (prevMem) => prevMem._id != selectedItem._id
+      ),
+    }))
+  }
+
+  const handleSelectTeacher = (selectedItem) => {
+    setGroupDetails((prevState) => ({
+      ...prevState,
+      teacherMembers: [...prevState.teacherMembers, selectedItem._id],
+    }))
+  }
+
+  const handleDiselectTeacher = (selectedItem) => {
+    setGroupDetails((prevState) => ({
+      ...prevState,
+      teacherMembers: prevState.teacherMembers.filter(
         (prevMem) => prevMem._id != selectedItem._id
       ),
     }))
@@ -61,9 +70,10 @@ export default function CreateGroupModal({
   const resetFields = () => {
     setTempImage('')
     setGroupDetails({
-      image: '',
+      image: null,
       groupName: '',
-      members: [],
+      studentMembers: [],
+      teacherMembers: [],
       inviteCode: '',
     })
   }
@@ -73,25 +83,26 @@ export default function CreateGroupModal({
 
     const data = {
       ...groupDetails,
-      createdBy: session.user._id
+      createdBy: session.user._id,
     }
+    
     setModalAttributes({
       isOpen: true,
       status: 'loading',
       customMessage: '',
     })
 
-     if (!isJoinGroup) {
-       uploadFiles(
-         `${process.env.BASE_URL}/api/groups?role=teacher`,
-         data,
-         tempImage,
-         'Groups',
-         false
-       )
-     }else if(isJoinGroup){
-       //patch request to the group
-     }
+    if (!isJoinGroup) {
+      uploadFiles(
+        `${process.env.BASE_URL}/api/groups?role=teacher`,
+        data,
+        tempImage,
+        'Groups',
+        false
+      )
+    } else if (isJoinGroup) {
+      //patch request to the group
+    }
   }
 
   return (
@@ -99,6 +110,7 @@ export default function CreateGroupModal({
       <Dialog
         open={isOpen}
         onClose={() => {
+          resetFields()
           setIsOpen(false)
         }}
         className="fixed inset-0 z-40 flex items-center justify-center h-full overflow-y-auto"
@@ -107,13 +119,18 @@ export default function CreateGroupModal({
 
         <div className={`relative z-50 `}>
           <div
-            className={` bg-WSAI-Indigo-25 ${!isJoinGroup ? 'min-h-[40rem]' : 'h-52'} text-WSAI-JetBlack flex flex-col w-[30rem] rounded-md`}
+            className={` bg-WSAI-Indigo-25 ${
+              !isJoinGroup ? 'min-h-[40rem]' : 'h-52'
+            } text-WSAI-JetBlack flex flex-col w-[30rem] rounded-md`}
           >
             <header className="w-full h-12 p-2 text-lg font-medium border-b border-WSAI-Indigo-100">
               {!isJoinGroup ? 'Create' : 'Join'} Group
             </header>
             {!isJoinGroup ? (
-              <form onSubmit={e => handleSubmit(e)} className="flex flex-col p-2 gap-y-4">
+              <form
+                onSubmit={(e) => handleSubmit(e)}
+                className="flex flex-col p-2 gap-y-4"
+              >
                 <div className="flex flex-col items-center gap-y-1">
                   <AvatarUpload
                     id="groupImage"
@@ -128,51 +145,84 @@ export default function CreateGroupModal({
                   <label htmlFor="Group Name">*Group Name:</label>
                   <input
                     required
-
-                    onChange={e => handleChange(e)}
+                    onChange={(e) => handleChange(e)}
                     value={groupDetails.groupName}
                     className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5  shadow-inner bg-WSAI-Indigo-100"
                     name="groupName"
                     id="Group Name"
                   />
                 </div>
-                <div className="flex flex-col gap-y-1">
-                  <label htmlFor="Select Member">*Members:</label>
-                  <Multiselect
-                    id="Select Member"
-                    required
-                    onSelect={(selectedList, selectedItem) =>
-                      handleSelectMember(selectedItem)
-                    }
-                    onRemove={(selectedList, selectedItem) =>
-                      handleDiselectMember(selectedItem)
-                    }
-                    displayValue="name"
-                    options={options}
-                    style={{
-                      multiselectContainer: {
-                        color: '#585A6B',
-                        padding: '0px',
-                      },
-                      searchBox: {
-                        backgroundColor: '#D3D6ED',
-                        border: 'none',
-                        boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-                      },
-                      optionContainer: {
-                        backgroundColor: '#EDE9FE',
-                      },
-                      chips: {
-                        background: '#2a379f',
-                      },
-                    }}
-                  />
+                <div className="grid grid-cols-2 gap-x-4">
+                  <div className="flex flex-col gap-y-1">
+                    <label htmlFor="Select Student">Student Members:</label>
+                    <Multiselect
+                      id="Select Student"
+                      onSelect={(selectedList, selectedItem) =>
+                        handleSelectStudent(selectedItem)
+                      }
+                      onRemove={(selectedList, selectedItem) =>
+                        handleDiselectStudent(selectedItem)
+                      }
+                      displayValue="name"
+                      avoidHighlightFirstOption={true}
+                      options={studentOptions}
+                      style={{
+                        multiselectContainer: {
+                          color: '#585A6B',
+                          padding: '0px',
+                        },
+                        searchBox: {
+                          backgroundColor: '#D3D6ED',
+                          border: 'none',
+                          boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+                        },
+                        optionContainer: {
+                          backgroundColor: '#EDE9FE',
+                        },
+                        chips: {
+                          background: '#2a379f',
+                        },
+                      }}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-y-1">
+                    <label htmlFor="Select Teacher">Teacher Members:</label>
+                    <Multiselect
+                      id="Select Teacher"
+                      onSelect={(selectedList, selectedItem) =>
+                        handleSelectTeacher(selectedItem)
+                      }
+                      onRemove={(selectedList, selectedItem) =>
+                        handleDiselectTeacher(selectedItem)
+                      }
+                      avoidHighlightFirstOption={true}
+                      displayValue="name"
+                      options={teacherOptions}
+                      style={{
+                        multiselectContainer: {
+                          color: '#585A6B',
+                          padding: '0px',
+                        },
+                        searchBox: {
+                          backgroundColor: '#D3D6ED',
+                          border: 'none',
+                          boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+                        },
+                        optionContainer: {
+                          backgroundColor: '#EDE9FE',
+                        },
+                        chips: {
+                          background: '#2a379f',
+                        },
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-y-1">
                   <label htmlFor="Invite Code">*Invite Code:</label>
                   <input
                     value={groupDetails.inviteCode}
-                    onChange={e => handleChange(e)}
+                    onChange={(e) => handleChange(e)}
                     maxLength={6}
                     required
                     className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5  shadow-inner bg-WSAI-Indigo-100"
@@ -194,18 +244,19 @@ export default function CreateGroupModal({
                   >
                     Cancel
                   </BorderedButton>
-                  <FilledButton>
-                    Submit
-                  </FilledButton>
+                  <FilledButton>Submit</FilledButton>
                 </div>
               </form>
             ) : (
-              <form onSubmit={e => handleSubmit(e)} className="flex flex-col p-2 gap-y-4">
+              <form
+                onSubmit={(e) => handleSubmit(e)}
+                className="flex flex-col p-2 gap-y-4"
+              >
                 <div className="flex flex-col gap-y-1">
                   <label htmlFor="Invite Code">*Invite Code:</label>
                   <input
                     required
-                    onChange={e => handleChange(e)}
+                    onChange={(e) => handleChange(e)}
                     className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 shadow-inner bg-WSAI-Indigo-150"
                     name="inviteCode"
                     id="Invite Code"

@@ -12,16 +12,26 @@ const schema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  recipient: {
+  senderTeacher: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student' || 'Teacher',
-    required: true,
-  },
-  sender: {
+    ref: 'Teacher',
+    required: false,
+  }],
+  senderStudent: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student' || 'Teacher',
-    required: true,
-  },
+    ref: 'Student',
+    required: false,
+  }],
+  receiverTeacher: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Teacher',
+    required: false,
+  }],
+  receiverStudent: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: false,
+  }],
 }, {
   timestamps: true
 })

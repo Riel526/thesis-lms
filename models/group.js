@@ -24,18 +24,26 @@ const schema = new mongoose.Schema({
     trim: true,
     index: { unique: true },
   },
-  createdBy: {
+  createdByTeacher: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student' || 'Teacher',
-    required: true,
-  },
-  members: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Student' || 'Teacher',
-      required: true,
-    },
-  ],
+    ref: 'Teacher',
+    required: false,
+  }],
+  createdByStudent: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: false,
+  }],
+  membersTeacher: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Teacher',
+    required: false,
+  }],
+  membersStudent: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: false,
+  }],
   posts: [
     {
       type: mongoose.Schema.Types.ObjectId,

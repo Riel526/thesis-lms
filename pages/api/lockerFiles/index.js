@@ -16,15 +16,15 @@ handler.get(async (req, res) => {
 })
 
 handler.post(async (req, res) => {
-
-  const {role} = req.query
+  const { role } = req.query
   try {
-    
+    let userId = `${role}id`
     const lockerFile = await LockerFile.create({
       fileName: req.body.fileName,
       fileType: req.body.fileType,
       file: req.body.attachedFile,
-      userId: req.body.userId,
+      studentMembers: req.body.studentMembers,
+      teacherMembers: req.body.teacherMembers,
     })
 
     if (role == 'student') {

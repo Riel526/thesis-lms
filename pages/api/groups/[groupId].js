@@ -14,11 +14,19 @@ handler.get(async (req, res) => {
   try {
     const group = await Group.findOne({ _id: groupId }, `${select}`)
       .populate({
-        path: 'members',
-        model: 'Student, Teacher'
+        path: 'membersStudent',
+        model: 'Student'
       })
       .populate({
-        path: 'createdBy',
+        path: 'membersTeacher',
+        model: 'Teacher'
+      })
+      .populate({
+        path: 'createdByStudent',
+        model: 'Student'
+      })
+      .populate({
+        path: 'createdByTeacher',
         model: 'Teacher'
       })
       .populate({
