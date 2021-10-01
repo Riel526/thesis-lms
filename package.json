@@ -9,10 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@badrap/bar-of-progress": "^0.1.2",
+    "@fullcalendar/daygrid": "^5.9.0",
+    "@fullcalendar/interaction": "^5.9.0",
+    "@fullcalendar/react": "^5.9.0",
     "@headlessui/react": "^1.4.1",
     "@tailwindcss/line-clamp": "^0.2.1",
     "bcryptjs": "^2.4.3",
     "mongoose": "^6.0.5",
+    "multiselect-react-dropdown": "^2.0.7",
     "next": "11.1.2",
     "next-auth": "^3.29.0",
     "next-connect": "^0.10.2",

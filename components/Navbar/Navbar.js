@@ -43,13 +43,13 @@ const Navbar = () => {
           <NavbarLink basePath="home" href="/home">
             <HomeIcon className="w-8 h-8 col-span-1 fill-current justify-self-center focus:ring" />
           </NavbarLink>
-          <NavbarLink basePath="dashboard" href="/dashboard">
+          <NavbarLink basePath="dashboard" href={`/dashboard/${session.user.role}/${session.user._id}`}>
             <DashboardIcon className="w-8 h-8 col-span-1 fill-current justify-self-center" />
           </NavbarLink>
-          <NavbarLink basePath="groups" href="/groups">
+          <NavbarLink basePath="groups" href={`/groups/${session.user.role}/${session.user._id}`}>
             <GroupsIcon className="w-8 h-8 col-span-1 fill-current justify-self-center" />
           </NavbarLink>
-          <NavbarLink basePath="locker" href="/locker">
+          <NavbarLink basePath="locker" href={`/locker/${session.user.role}/${session.user._id}`}>
             <LockerIcon className="w-8 h-8 col-span-1 fill-current justify-self-center" />
           </NavbarLink>
           <NavbarLink basePath="games" href="/games">
@@ -84,9 +84,9 @@ const Navbar = () => {
           <button className="w-10 p-2 rounded-full bg-WSAI-Indigo-400 focus:outline-none focus:ring">
             <NotificationIcon className="w-6 h-6 stroke-current" />
           </button>
-          <button className="w-10 p-2 rounded-full bg-WSAI-Indigo-400 focus:outline-none focus:ring">
+          <a href={`/messages/${session.user.role}/${session.user._id}`} className="w-10 p-2 rounded-full bg-WSAI-Indigo-400 focus:outline-none focus:ring">
             <MessagesIcon className="w-6 h-6 stroke-current" />
-          </button>
+          </a>
           <NavbarDropdown>
             <ChevronDownIcon className="w-4 h-4 stroke-current" />
           </NavbarDropdown>

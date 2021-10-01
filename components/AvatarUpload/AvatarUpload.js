@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 
-const AvatarUpload = props => {
+const AvatarUpload = (props) => {
   const [image, setImage] = useState('')
 
   useEffect(() => {
@@ -19,30 +19,45 @@ const AvatarUpload = props => {
     }
   }, [props.oldImage])
 
-  const showImage = e => {
+  const showImage = (e) => {
     setImage(e.target.result)
   }
+
+  const filePickerRef = useRef()
 
   return (
     <>
       <label
         htmlFor={props.id}
-        className={`${props.className ? props.className : 'w-64 h-64 '} relative flex items-center justify-center mb-4 overflow-hidden transition-colors duration-200 ease-in-out shadow-md cursor-pointer rounded-xl bg-default-900 group ring-trans `}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if(e.key == ('Enter')){
+            console.log(filePickerRef.current.click())
+          }
+          
+        }}
+        className={`${
+          props.className ? props.className : 'w-40 h-40 '
+        } focus:outline-none focus:ring focus:ring-inset relative flex items-center justify-center mb-4 overflow-hidden transition-colors duration-200 ease-in-out cursor-pointer rounded-xl bg-WSAI-Indigo-100 shadow-inner group ring-trans `}
       >
-        <div className={`absolute flex items-center uppercase opacity-0 justify-center z-50 w-full h-full transition-opacity hover:bg-default-1000 group-focus:opacity-70 group-hover:opacity-70  text-default-100
-          ${image ? 'font-bold' : ''}`}>Upload a picture</div>
+        <div
+          className={`absolute flex items-center uppercase opacity-0 justify-center z-50 w-full h-full transition-opacity hover:bg-default-1000 group-focus:opacity-70 group-hover:opacity-70   text-xs 
+          ${image ? 'text-xs bg-WSAI-Indigo-900 text-WSAI-Indigo-25' : ' text-WSAI-JetBlack'}`}
+        >
+          Upload a picture
+        </div>
 
         {image && (
-          <Image src={image} objectFit='cover' layout='fill' alt='subject' />
+          <Image src={image} objectFit="cover" layout="fill" alt="subject" />
         )}
       </label>
-
       <input
         name={props.name}
         id={props.id}
-        className='hidden'
-        type='file'
-        accept='image/*'
+        className="hidden"
+        type="file"
+        accept="image/*"
+        ref={filePickerRef}
         onChange={props.onChange}
       />
     </>

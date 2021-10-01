@@ -15,6 +15,16 @@ const AppReducer = (state, action) => {
         ...state,
         moduleFile: action.payload,
       }
+    case ACTIONS.SET_LOCKER_FILES:
+      return {
+        ...state,
+        lockerFiles: [...state.lockerFiles, ...action.payload],
+      }
+    case ACTIONS.CLEAR_PENDING_LOCKER_FILES:
+      return {
+        ...state,
+        lockerFiles: [],
+      }
     default:
       return state
   }

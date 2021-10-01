@@ -165,7 +165,7 @@ const UserProfile = (props) => {
                   <SectionIcon className="w-4 h-4 fill-current" />
                   Section Advisory:
                 </p>
-                <p>{props.userInformation.advisorySection.sectionName}</p>
+                <p>{props.userInformation.advisorySection && props.userInformation.advisorySection.sectionName}</p>
               </div>
             </div>
             <div>
@@ -178,13 +178,13 @@ const UserProfile = (props) => {
                     maxLength={600}
                     value={introduction}
                     onChange={(e) =>
-                      setIntroduction((prevState) => e.target.value)
+                      setIntroduction(e.target.value)
                     }
-                    className="w-full rounded-md resize-none h-[22rem] focus:outline-none focus:ring focus:ring-inset p-4 bg-transparent"
+                    className="w-full rounded-t-md resize-none h-[22rem] focus:outline-none focus:ring focus:ring-inset p-4 bg-transparent"
                     name="introduction"
                     id="Introduction"
                   />
-                  <div className="flex items-center justify-end flex-1 px-4 bg-WSAI-Indigo-25 gap-x-4">
+                  <div className="flex items-center justify-end flex-1 px-4 bg-indigo-100 shadow-inner gap-x-4">
                     <BorderedButton
                       onClick={(e) => {
                         e.preventDefault()
@@ -200,7 +200,7 @@ const UserProfile = (props) => {
                 </form>
               ) : (
                 <div className="flex flex-col w-full overflow-hidden rounded-md">
-                  <div className="flex h-[22rem] p-4 whitespace-pre-wrap ">
+                  <div className="flex h-[22rem] p-4 whitespace-pre-wrap break-words ">
                     <p className="flex-1 w-full text-lg first-letter:text-3xl first-letter:uppercase">
                       {props.userInformation.introduction}
                     </p>

@@ -59,11 +59,11 @@ const schema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  files: [
+  lockerFiles: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'LockerFile',
       required: false,
-      trim: true,
     },
   ],
   contactNumber: {

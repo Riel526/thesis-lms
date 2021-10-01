@@ -78,11 +78,11 @@ const schema = new mongoose.Schema({
     ref: 'Section',
     required: true,
   },
-  files: [
+  lockerFiles: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'LockerFile',
       required: false,
-      trim: true,
     },
   ],
   role: {

@@ -3,3 +3,73 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
+/* scrollbar */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #19215f;
+}
+
+
+/*Full Calendar */
+
+.fc{
+  max-height: 500px;
+}
+
+.fc-toolbar-title {
+  color: #2a379f;
+}
+
+.fc-today-button {
+  background-color: #2a379f !important;
+  border: hidden !important;
+}
+
+.fc-prev-button,
+.fc-next-button {
+  background-color: #2a379f !important;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition-duration: 250ms;
+  border: hidden !important;
+}
+
+.fc-prev-button:hover,
+.fc-next-button:hover {
+  background-color: #2a379f !important;
+}
+
+.fc-prev-button:focus,
+.fc-next-button:focus {
+  background-color: #2a379f !important;
+  outline: hidden !important;
+}
+
+.fc-scroller,
+.fc-scroller-liquid-absolute {
+  margin-right: -0.3rem;
+}
+
+.fc table,
+th,
+td {
+  border-color: #abb1e5 !important;
+}
+
+.fc-day-today {
+  background-color: #abb1e5 !important;
+}
+
+.fc-day-disabled {
+  background-color: transparent !important;
+}

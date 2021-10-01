@@ -22,8 +22,7 @@ const moduleQuarters = [
 ]
 
 export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
-  const { moduleFile, uploadModule, setModalAttributes } =
-    useContext(AppContext)
+  const { moduleFile, uploadFiles, setModalAttributes, setModuleFile } = useContext(AppContext)
   const [allowedMimeTypes, setAllowedMimeTypes] = useState(
     'application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf'
   )
@@ -81,6 +80,18 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
     })
   }
 
+  const resetFields = () => {
+    setModuleDetails({
+      moduleTitle: '',
+      moduleDescription: '',
+      subject: subjectId,
+      moduleQuarter: 'First Quarter',
+      isHidden: false,
+      attachedFile: '',
+      link: '',
+    })
+  }
+
   const handleCheckboxChange = (e) => {
     const key = e.target.name
     const checked = e.target.checked
@@ -102,11 +113,11 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
       customMessage: '',
     })
 
-    uploadModule(
+    uploadFiles(
       `${process.env.BASE_URL}/api/modules`,
       moduleDetails,
       moduleFile,
-      'Modules',
+      `Modules/${subjectId}`,
       false
     )
 
@@ -132,7 +143,7 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
       >
         <Dialog.Overlay className="fixed inset-0 z-10 flex text-center transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80" />
 
-        <div className={`relative z-50`}>
+        <div className={`relative z-40`}>
           <div
             className={` bg-WSAI-Indigo-25 ${
               moduleDetails.moduleType == 'Link' ? 'h-[35rem]' : 'h-[50rem]'
@@ -146,21 +157,23 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
               className="grid grid-cols-2 p-2 gap-y-4 gap-x-4"
             >
               <div className="flex flex-col gap-y-1">
-                <label htmlFor="Module Title">Title:</label>
+                <label htmlFor="Module Title">*Title:</label>
                 <input
+                  required
                   onChange={(e) => handleChange(e)}
                   value={moduleDetails.moduleTitle}
-                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 bg-transparent shadow-inner bg-WSAI-Indigo-100"
+                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 t shadow-inner bg-WSAI-Indigo-100"
                   name="moduleTitle"
                   id="Module Title"
                 />
               </div>
               <div className="flex flex-col gap-y-1">
-                <label htmlFor="Module Type">Type:</label>
+                <label htmlFor="Module Type">*Type:</label>
                 <select
+                  required
                   onChange={(e) => handleChange(e)}
                   value={moduleDetails.moduleType}
-                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 bg-transparent shadow-inner bg-WSAI-Indigo-100"
+                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 t shadow-inner bg-WSAI-Indigo-100"
                   name="moduleType"
                   id="Module Type"
                 >
@@ -179,11 +192,12 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
                 </select>
               </div>
               <div className="relative flex flex-col col-span-2 gap-y-1">
-                <label htmlFor="Module Quarter">Quarter:</label>
+                <label htmlFor="Module Quarter">*Quarter:</label>
                 <select
+                  required
                   onChange={(e) => handleChange(e)}
                   value={moduleDetails.moduleQuarter}
-                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 bg-transparent shadow-inner bg-WSAI-Indigo-100"
+                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 t shadow-inner bg-WSAI-Indigo-100"
                   name="moduleQuarter"
                   id="Module Quarter"
                 >
@@ -216,24 +230,26 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
                   onChange={(e) => handleChange(e)}
                   htmlFor="Module Description"
                 >
-                  Description:
+                  *Description:
                 </label>
                 <textarea
+                  required
                   maxLength={250}
                   value={moduleDetails.moduleDescription}
                   onChange={(e) => handleChange(e)}
-                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 h-36 bg-transparent shadow-inner resize-none bg-WSAI-Indigo-100"
+                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 h-36 t shadow-inner resize-none bg-WSAI-Indigo-100"
                   name="moduleDescription"
                   id="Module Description"
                 />
               </div>
               {moduleDetails.moduleType == 'Link' ? (
                 <div className="flex flex-col col-span-2 gap-y-1">
-                  <label htmlFor="link">Link:</label>
+                  <label htmlFor="link">*Link:</label>
                   <input
+                    required={moduleDetails.moduleType != 'Link' ? false : true}
                     onChange={(e) => handleChange(e)}
                     value={moduleDetails.link}
-                    className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 bg-transparent shadow-inner bg-WSAI-Indigo-100"
+                    className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 t shadow-inner bg-WSAI-Indigo-100"
                     name="link"
                     id="link"
                   />
@@ -241,10 +257,17 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
               ) : (
                 <div className="flex flex-col col-span-2 gap-y-1">
                   <div className="flex items-center justify-between">
-                    <label htmlFor="Module">Upload:</label>
+                    <label htmlFor="Module">*Upload:</label>
                     <span className="text-xs">Maximum of 1 file</span>
                   </div>
-                  <Dropzone maxFiles={1} allowedMimeTypes={allowedMimeTypes} />
+                  <Dropzone
+                    isRequired={
+                      moduleDetails.moduleType != 'Link' ? true : false
+                    }
+                    isFormDisplay={true}
+                    maxFiles={1}
+                    allowedMimeTypes={allowedMimeTypes}
+                  />
                 </div>
               )}
               <div className="absolute bottom-0 right-0 flex justify-end w-full p-2 rounded-b-md justify-self-end gap-x-2 bg-WSAI-Indigo-50">
@@ -255,8 +278,9 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
                   onClick={(e) => {
                     e.preventDefault()
                     setIsOpen(false)
+                    resetFields()
                   }}
-                  className="relative z-50 "
+                  className="relative z-40 "
                 >
                   Cancel
                 </BorderedButton>

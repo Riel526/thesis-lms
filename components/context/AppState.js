@@ -16,6 +16,7 @@ const AppState = ({ children }) => {
       customMessage: '',
     },
     moduleFile: null,
+    lockerFiles: [],
     searchResults: [],
   }
 
@@ -25,8 +26,31 @@ const AppState = ({ children }) => {
     router.replace(router.asPath)
   }
 
+  
+  const setModuleFile = (files) => {
+    dispatch({
+      type: ACTIONS.SET_MODULE_FILE,
+      payload: files,
+    })
+  }
+
+  const setLockerFiles = (files) => {
+    dispatch({
+      type: ACTIONS.SET_LOCKER_FILES,
+      payload: files,
+    })
+  }
+
+  const clearPendingLockerFiles = (files) => {
+    dispatch({
+      type: ACTIONS.CLEAR_PENDING_LOCKER_FILES,
+      payload: files,
+    })
+  }
+
+
   const saveData = async (fetchURL, data) => {
-    let response = await fetch(fetchURL, {
+    await fetch(fetchURL, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -57,13 +81,6 @@ const AppState = ({ children }) => {
           customMessage: err,
         })
       })
-  }
-
-  const setModuleFile = (files) => {
-    dispatch({
-      type: ACTIONS.SET_MODULE_FILE,
-      payload: files,
-    })
   }
 
   const updateData = async (fetchURL, data) => {
@@ -100,7 +117,7 @@ const AppState = ({ children }) => {
       })
   }
 
-  const uploadModule = async (
+  const uploadFiles = async (
     fetchURL,
     data,
     resource,
@@ -122,6 +139,7 @@ const AppState = ({ children }) => {
         signal: controller.signal,
       }
     )
+
     let json = await response.json()
 
     let url = await json.url
@@ -189,6 +207,7 @@ const AppState = ({ children }) => {
       value={{
         modalAttributes: state.modalAttributes,
         moduleFile: state.moduleFile,
+        lockerFiles: state.lockerFiles,
         refreshData,
         saveData,
         updateData,
@@ -196,7 +215,9 @@ const AppState = ({ children }) => {
         setModalAttributes,
         changeProfilePhoto,
         setModuleFile,
-        uploadModule,
+        uploadFiles,
+        setLockerFiles,
+        clearPendingLockerFiles,
       }}
     >
       {children}

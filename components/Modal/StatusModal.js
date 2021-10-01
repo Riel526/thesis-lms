@@ -22,7 +22,7 @@ export default function StatusModal({ setModalAttributes, customMessage, status,
     <>
       <Dialog
         open={isOpen} onClose={() => setModalAttributes({ isOpen: false, })}
-        className="fixed inset-0 z-40 flex items-center justify-center h-full overflow-y-auto"
+        className="fixed inset-0 z-50 flex items-center justify-center h-full overflow-y-auto"
       >
         <Dialog.Overlay className='fixed inset-0 z-10 flex text-center transition-transform duration-300 ease-in-out bg-gray-900 bg-opacity-80' />
 

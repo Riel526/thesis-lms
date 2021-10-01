@@ -25,7 +25,7 @@ export default function AddAnnouncementModal({ isOpen, setIsOpen }) {
               <div className="flex flex-col gap-y-1">
                 <label htmlFor="Announcement Title">Title:</label>
                 <input
-                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 bg-transparent shadow-inner bg-WSAI-Indigo-100"
+                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 shadow-inner bg-WSAI-Indigo-100"
                   name="announcementTitle"
                   id="Announcement Title"
                 />
@@ -33,7 +33,7 @@ export default function AddAnnouncementModal({ isOpen, setIsOpen }) {
               <div className="flex flex-col gap-y-1">
                 <label htmlFor="Announcement Content">Content:</label>
                 <textarea
-                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 h-40 bg-transparent shadow-inner resize-none bg-WSAI-Indigo-100"
+                  className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 h-40 shadow-inner resize-none bg-WSAI-Indigo-100"
                   name="announcementContent"
                   id="Announcement Content"
                 />
