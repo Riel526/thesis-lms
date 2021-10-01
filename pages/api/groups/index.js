@@ -16,19 +16,32 @@ handler.get(async (req, res) => {
 })
 
 handler.post(async (req, res) => {
+  const { role } = req.query
   try {
-    const group = await Group.create({})
+    const group = await Group.create({
+      image: req.body.attachedFile,
+      groupName: req.body.groupName,
+      inviteCode: req.body.inviteCode,
+      createdBy: req.body.createdBy,
+      members: [...req.body.members, req.body.createdBy],
+    })
 
-    await Subject.findOneAndUpdate(
-      {
-        _id: req.body.subject,
-      },
-      {
-        $addToSet: {
-          modules: module,
-        },
-      }
-    )
+    if (role == 'student') {
+      await Student.findOneAndUpdate(
+        { _id: req.body.createdBy },
+        {
+          $addToSet: { groups: group },
+        }
+      )
+    } else if (role == 'teacher') {
+      await Teacher.findOneAndUpdate(
+        { _id: req.body.createdBy },
+        {
+          $addToSet: { groups: group },
+        }
+      )
+    }
+
     res.status(200).json({ message: 'success' })
   } catch (err) {
     console.log(err)

@@ -3,7 +3,7 @@ import FilledButton from '../Buttons/FilledButton'
 import { Dialog } from '@headlessui/react'
 import Multiselect from 'multiselect-react-dropdown'
 import AvatarUpload from './../AvatarUpload/AvatarUpload'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function CreateGroupModal({
   setModalAttributes,
@@ -11,9 +11,8 @@ export default function CreateGroupModal({
   isOpen,
   isJoinGroup,
   options,
-  selectedGroupMembers,
-  handleSelect,
-  handleDiselect,
+  uploadFiles,
+  session
 }) {
   const [groupDetails, setGroupDetails] = useState({
     image: null,
@@ -24,11 +23,30 @@ export default function CreateGroupModal({
 
   const [tempImage, setTempImage] = useState()
 
-  const handleSelectMember = (selectedList) => {
+  
+  useEffect(() => {
+    return(() => {
+      resetFields()
+    })
+  }, [])
+
+
+  const handleChange = (e) => {
+    const key = e.target.name
+    const value = e.target.value
+
     setGroupDetails((prevState) => ({
       ...prevState,
-      members: [...prevState.members, ...selectedList],
+      [key]: value,
     }))
+  }
+
+  const handleSelectMember = (selectedItem) => {
+    setGroupDetails((prevState) => ({
+      ...prevState,
+      members: [...prevState.members, selectedItem._id],
+    }))
+
   }
 
   const handleDiselectMember = (selectedItem) => {
@@ -41,14 +59,39 @@ export default function CreateGroupModal({
   }
 
   const resetFields = () => {
-
     setTempImage('')
     setGroupDetails({
-      image: null,
+      image: '',
       groupName: '',
       members: [],
       inviteCode: '',
     })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const data = {
+      ...groupDetails,
+      createdBy: session.user._id
+    }
+    setModalAttributes({
+      isOpen: true,
+      status: 'loading',
+      customMessage: '',
+    })
+
+     if (!isJoinGroup) {
+       uploadFiles(
+         `${process.env.BASE_URL}/api/groups?role=teacher`,
+         data,
+         tempImage,
+         'Groups',
+         false
+       )
+     }else if(isJoinGroup){
+       //patch request to the group
+     }
   }
 
   return (
@@ -64,13 +107,13 @@ export default function CreateGroupModal({
 
         <div className={`relative z-50 `}>
           <div
-            className={` bg-WSAI-Indigo-25 min-h-[40rem] text-WSAI-JetBlack flex flex-col w-[30rem] rounded-md`}
+            className={` bg-WSAI-Indigo-25 ${!isJoinGroup ? 'min-h-[40rem]' : 'h-52'} text-WSAI-JetBlack flex flex-col w-[30rem] rounded-md`}
           >
             <header className="w-full h-12 p-2 text-lg font-medium border-b border-WSAI-Indigo-100">
               {!isJoinGroup ? 'Create' : 'Join'} Group
             </header>
             {!isJoinGroup ? (
-              <form className="flex flex-col p-2 gap-y-4">
+              <form onSubmit={e => handleSubmit(e)} className="flex flex-col p-2 gap-y-4">
                 <div className="flex flex-col items-center gap-y-1">
                   <AvatarUpload
                     id="groupImage"
@@ -79,15 +122,18 @@ export default function CreateGroupModal({
                     onChange={(e) => setTempImage(e.target.files[0])}
                     oldImage={tempImage}
                   />
-                  <label htmlFor="Announcement Title">*Group Image:</label>
+                  <label htmlFor="Group Image">*Group Image:</label>
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <label htmlFor="Announcement Title">*Group Name:</label>
+                  <label htmlFor="Group Name">*Group Name:</label>
                   <input
                     required
+
+                    onChange={e => handleChange(e)}
+                    value={groupDetails.groupName}
                     className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5  shadow-inner bg-WSAI-Indigo-100"
-                    name="announcementTitle"
-                    id="Announcement Title"
+                    name="groupName"
+                    id="Group Name"
                   />
                 </div>
                 <div className="flex flex-col gap-y-1">
@@ -95,12 +141,10 @@ export default function CreateGroupModal({
                   <Multiselect
                     id="Select Member"
                     required
-                    selectedValues={groupDetails.members}
-                    avoidHighlightFirstOption={true}
-                    onSelect={(selectedList) =>
-                      handleSelectMember(selectedList)
+                    onSelect={(selectedList, selectedItem) =>
+                      handleSelectMember(selectedItem)
                     }
-                    onRemove={(selectedItem) =>
+                    onRemove={(selectedList, selectedItem) =>
                       handleDiselectMember(selectedItem)
                     }
                     displayValue="name"
@@ -125,13 +169,15 @@ export default function CreateGroupModal({
                   />
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <label htmlFor="Invite Code">Invite Code:</label>
+                  <label htmlFor="Invite Code">*Invite Code:</label>
                   <input
+                    value={groupDetails.inviteCode}
+                    onChange={e => handleChange(e)}
                     maxLength={6}
                     required
                     className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5  shadow-inner bg-WSAI-Indigo-100"
                     name="inviteCode"
-                    id="Invite COde"
+                    id="Invite Code"
                   />
                 </div>
                 <div className="absolute bottom-0 right-0 flex justify-end w-full p-2 rounded-b-md justify-self-end gap-x-2 bg-WSAI-Indigo-50">
@@ -141,24 +187,28 @@ export default function CreateGroupModal({
                     }
                     onClick={(e) => {
                       e.preventDefault()
-                      resetFields();
-                      setIsOpen(false);
+                      resetFields()
+                      setIsOpen(false)
                     }}
                     className="relative z-50 "
                   >
                     Cancel
                   </BorderedButton>
-                  <FilledButton>Submit</FilledButton>
+                  <FilledButton>
+                    Submit
+                  </FilledButton>
                 </div>
               </form>
             ) : (
-              <form className="flex flex-col p-2 gap-y-4">
+              <form onSubmit={e => handleSubmit(e)} className="flex flex-col p-2 gap-y-4">
                 <div className="flex flex-col gap-y-1">
-                  <label htmlFor="Announcement Title">Invite Code:</label>
+                  <label htmlFor="Invite Code">*Invite Code:</label>
                   <input
+                    required
+                    onChange={e => handleChange(e)}
                     className="rounded-md focus:outline-none focus:ring focus:ring-inset p-1.5 shadow-inner bg-WSAI-Indigo-150"
-                    name="announcementTitle"
-                    id="Announcement Title"
+                    name="inviteCode"
+                    id="Invite Code"
                   />
                 </div>
                 <div className="absolute bottom-0 right-0 flex justify-end w-full p-2 rounded-b-md justify-self-end gap-x-2 bg-WSAI-Indigo-50">
@@ -167,9 +217,9 @@ export default function CreateGroupModal({
                       'hover:bg-red-600 hover:text-WSAI-Indigo-25 focus:bg-red-600 focus:text-WSAI-Indigo-25 border-red-600 text-red-600'
                     }
                     onClick={(e) => {
-                      e.preventDefault();
-                      resetFields();
-                      setIsOpen(false);
+                      e.preventDefault()
+                      resetFields()
+                      setIsOpen(false)
                     }}
                     className="relative z-50 "
                   >

@@ -124,7 +124,7 @@ const AppState = ({ children }) => {
     folderName,
     isUpdate
   ) => {
-    //where resource = to the module file
+    //where resource = to the file
     const cloudinaryData = new FormData()
 
     cloudinaryData.append('file', resource)

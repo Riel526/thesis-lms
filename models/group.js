@@ -31,15 +31,9 @@ const schema = new mongoose.Schema({
   },
   members: [
     {
-      userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Student' || 'Teacher',
-        required: true,
-      },
-      isAdmin: {
-        type: Boolean,
-        required: true,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student' || 'Teacher',
+      required: true,
     },
   ],
   posts: [
@@ -52,4 +46,4 @@ const schema = new mongoose.Schema({
 })
 
 module.exports =
-  mongoose.models[MODEL_NAME] || mongoose.model(MODEL_NAME, schema, 'group')
+  mongoose.models[MODEL_NAME] || mongoose.model(MODEL_NAME, schema, 'groups')

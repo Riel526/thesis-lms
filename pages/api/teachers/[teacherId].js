@@ -3,6 +3,7 @@ import Teacher from '../../../models/teacher'
 import Subject from '../../../models/subject'
 import Section from '../../../models/section'
 import LockerFile from '../../../models/lockerFile'
+import Group from '../../../models/group'
 import { jsonify } from '../../../utils/db'
 
 const handler = createHandler()
@@ -22,6 +23,8 @@ handler.get(async (req, res) => {
         path: 'advisorySection',
       }).populate({
         path: 'lockerFiles'
+      }).populate({
+        path: 'groups'
       })
 
     res.status(200).json({ message: 'success', data: jsonify(teachers) })
