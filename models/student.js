@@ -64,8 +64,12 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'GradeLevel',
     required: true,
-    trim: true,
   },
+  groups: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group',
+    required: true,
+  }],
   subjects: [
     {
       type: mongoose.Schema.Types.ObjectId,

@@ -66,6 +66,13 @@ const schema = new mongoose.Schema({
       required: false,
     },
   ],
+  groups: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Group',
+      required: true,
+    },
+  ],
   contactNumber: {
     type: String,
     required: true,
@@ -104,7 +111,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: false,
     trim: true,
-  }
+  },
 })
 
 module.exports =
