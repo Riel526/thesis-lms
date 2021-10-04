@@ -8,31 +8,48 @@ const schema = new mongoose.Schema({
     required: true,
     auto: true,
   },
-  postedByTeacher: [{
+  postedByTeacher: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Teacher',
     required: false,
-  }],
-  postedByStudent: [{
+  },
+
+  postedByStudent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: false,
-  }],
+  },
+  attachedFile: {
+    type: String,
+    required: false,
+  },
   content: {
     type: String,
     required: true,
     trim: true,
   },
-  commentsByTeacher: [{
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+      required: false,
+    },
+  ],
+  datePosted: {
+    type: Date,
+    required: true,
+    default: Date.now(),
+  },
+  groupId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Teacher',
+    ref: 'Group',
     required: false,
-  }],
-  commentsByStudent: [{
+  },
+  announcementId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student',
+    ref: 'Announcement',
     required: false,
-  }],
+  },
 })
 
 module.exports =

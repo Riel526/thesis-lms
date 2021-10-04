@@ -112,6 +112,22 @@ const schema = new mongoose.Schema({
     required: false,
     trim: true,
   },
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post',
+      required: false,
+      trim: true,
+    }
+  ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+      required: false,
+      trim: true,
+    }
+  ],
 })
 
 module.exports =

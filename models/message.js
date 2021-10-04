@@ -22,12 +22,12 @@ const schema = new mongoose.Schema({
     ref: 'Student',
     required: false,
   }],
-  receiverTeacher: [{
+  reciepientTeacher: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Teacher',
     required: false,
   }],
-  receiverStudent: [{
+  reciepientStudent: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: false,

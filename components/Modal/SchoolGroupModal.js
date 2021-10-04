@@ -178,6 +178,7 @@ export default function CreateGroupModal({
                         },
                         optionContainer: {
                           backgroundColor: '#EDE9FE',
+                          zIndex: '100'
                         },
                         chips: {
                           background: '#2a379f',
@@ -202,6 +203,7 @@ export default function CreateGroupModal({
                         multiselectContainer: {
                           color: '#585A6B',
                           padding: '0px',
+                          zIndex: '100'
                         },
                         searchBox: {
                           backgroundColor: '#D3D6ED',
@@ -210,6 +212,7 @@ export default function CreateGroupModal({
                         },
                         optionContainer: {
                           backgroundColor: '#EDE9FE',
+                          zIndex: '100'
                         },
                         chips: {
                           background: '#2a379f',
@@ -272,7 +275,7 @@ export default function CreateGroupModal({
                       resetFields()
                       setIsOpen(false)
                     }}
-                    className="relative z-50 "
+                    className="z-0 "
                   >
                     Cancel
                   </BorderedButton>

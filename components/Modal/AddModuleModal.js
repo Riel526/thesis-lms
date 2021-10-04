@@ -280,7 +280,7 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
                     setIsOpen(false)
                     resetFields()
                   }}
-                  className="relative z-40 "
+                  className="relative "
                 >
                   Cancel
                 </BorderedButton>

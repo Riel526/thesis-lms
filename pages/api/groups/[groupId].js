@@ -2,6 +2,7 @@ import createHandler from '../../../middlewares/index'
 import Student from '../../../models/student'
 import Teacher from '../../../models/teacher'
 import Post from '../../../models/post'
+import Comment from '../../../models/comment'
 import Group from '../../../models/group'
 import { jsonify } from '../../../utils/db'
 
@@ -15,26 +16,33 @@ handler.get(async (req, res) => {
     const group = await Group.findOne({ _id: groupId }, `${select}`)
       .populate({
         path: 'membersStudent',
-        model: 'Student'
+        model: 'Student',
+        select: '_id groups image firstName lastName role posts',
       })
       .populate({
         path: 'membersTeacher',
-        model: 'Teacher'
+        model: 'Teacher',
+        select: '_id groups image firstName lastName role posts',
       })
       .populate({
         path: 'createdByStudent',
-        model: 'Student'
+        model: 'Student',
+        select: '_id groups image firstName lastName role posts',
       })
       .populate({
         path: 'createdByTeacher',
-        model: 'Teacher'
+        model: 'Teacher',
+        select: '_id groups image firstName lastName role posts',
       })
       .populate({
         path: 'posts',
+        model: 'Post',
+        populate: 'postedByTeacher postedByStudent comments',
       })
 
     res.status(200).json({ message: 'success', data: jsonify(group) })
   } catch (err) {
+    console.log(err)
     res.status(400).json({ message: 'failed', error: err })
   }
 })

@@ -26,10 +26,6 @@ const schema = new mongoose.Schema({
     ref: 'Student',
     required: true,
   },
-  date: {
-    type: Date,
-    required: true,
-  },
   content: [{
     type: todoContentSchema,
     required: false,
