@@ -4,6 +4,8 @@ import Subject from '../../../models/subject'
 import Section from '../../../models/section'
 import LockerFile from '../../../models/lockerFile'
 import Group from '../../../models/group'
+import Post from '../../../models/post'
+import Message from '../../../models/message'
 import { jsonify } from '../../../utils/db'
 
 const handler = createHandler()
@@ -14,18 +16,28 @@ handler.get(async (req, res) => {
   try {
     const teachers = await Teacher.findOne(
       { _id: teacherId },
-      '_id image firstName lastName birthDate email role files introduction contactNumber lockerFiles'
+      '_id image firstName lastName birthDate email role files introduction contactNumber lockerFiles messages'
     )
       .populate({
         path: 'subjects',
       })
       .populate({
         path: 'advisorySection',
-      }).populate({
-        path: 'lockerFiles'
-      }).populate({
+      })
+      .populate({
+        path: 'lockerFiles',
+      })
+      .populate({
         path: 'groups',
-        select: '_id image groupName posts'
+        select: '_id image groupName posts',
+      })
+      .populate({
+        path: 'sentMessages',
+        populate: 'studentReciepient teacherReciepient senderStudent senderTeacher'
+      })
+      .populate({
+        path: 'receivedMessages',
+        populate: 'studentReciepient teacherReciepient senderStudent senderTeacher'
       })
 
     res.status(200).json({ message: 'success', data: jsonify(teachers) })
@@ -40,7 +52,7 @@ handler.patch(async (req, res) => {
     const teacher = await Teacher.findOne({ _id: teacherId })
 
     if (req.body.introduction) teacher.introduction = req.body.introduction
-    if (req.body.image)teacher.image = req.body.image
+    if (req.body.image) teacher.image = req.body.image
 
     teacher.save()
 

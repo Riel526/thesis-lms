@@ -21,7 +21,7 @@ const Navbar = () => {
   const [session, loading] = useSession()
 
   return (
-    <nav className="fixed top-0 left-0 z-30 w-full shadow">
+    <nav className="fixed top-0 left-0 z-40 w-full shadow">
 
       <div className="grid w-full h-16 grid-cols-12 bg-WSAI-Indigo-500 text-WSAI-Indigo-25">
 

@@ -3,6 +3,7 @@ import Subject from '../../../models/subject'
 import Students from '../../../models/student'
 import Section from '../../../models/section'
 import Teacher from '../../../models/teacher'
+import Announcement from '../../../models/announcement'
 import Module from '../../../models/module'
 import { jsonify } from '../../../utils/db'
 
@@ -26,6 +27,8 @@ handler.get(async (req, res) => {
       })
       .populate({
         path: 'modules',
+      }).populate({
+        path: 'announcements',
       })
     res.status(200).json({ message: 'success', data: jsonify(subjects) })
   } catch (err) {

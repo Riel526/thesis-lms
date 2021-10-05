@@ -20,7 +20,7 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   const { role } = req.query
 
-  console.log(req.body)
+
   try {
     const post = await Post.create({
       content: req.body.content,

@@ -2,38 +2,33 @@ const mongoose = require('mongoose')
 
 const MODEL_NAME = 'Announcement'
 
-const schema = new mongoose.Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    auto: true,
+const schema = new mongoose.Schema(
+  {
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      auto: true,
+    },
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    subject: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Subject',
+      required: false,
+    },
   },
-  title: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  start: {
-    type: Date,
-    required: true,
-    trim: true,
-  },
-  content: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  comments: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Comment',
-    required: false,
-  }],
-  subject: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Subject',
-    required: false,
-  },
-})
+  {
+    timestamps: true,
+  }
+)
 
 module.exports =
   mongoose.models[MODEL_NAME] ||

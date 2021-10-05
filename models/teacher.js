@@ -118,7 +118,7 @@ const schema = new mongoose.Schema({
       ref: 'Post',
       required: false,
       trim: true,
-    }
+    },
   ],
   comments: [
     {
@@ -126,7 +126,21 @@ const schema = new mongoose.Schema({
       ref: 'Comment',
       required: false,
       trim: true,
-    }
+    },
+  ],
+  receivedMessages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
+      required: false,
+    },
+  ],
+  sentMessages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
+      required: false,
+    },
   ],
 })
 

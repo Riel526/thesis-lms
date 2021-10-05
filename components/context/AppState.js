@@ -26,7 +26,6 @@ const AppState = ({ children }) => {
     router.replace(router.asPath)
   }
 
-  
   const setModuleFile = (files) => {
     dispatch({
       type: ACTIONS.SET_MODULE_FILE,
@@ -47,7 +46,6 @@ const AppState = ({ children }) => {
       payload: files,
     })
   }
-
 
   const saveData = async (fetchURL, data) => {
     await fetch(fetchURL, {
@@ -130,19 +128,21 @@ const AppState = ({ children }) => {
     cloudinaryData.append('file', resource)
     cloudinaryData.append('upload_preset', 'wp02goop')
     cloudinaryData.append('folder', folderName)
+    let url = ''
+    if (resource) {
+      let response = await fetch(
+        `https://api.cloudinary.com/v1_1/edwin-thesis/auto/upload`,
+        {
+          method: 'POST',
+          body: cloudinaryData,
+          signal: controller.signal,
+        }
+      )
 
-    let response = await fetch(
-      `https://api.cloudinary.com/v1_1/edwin-thesis/auto/upload`,
-      {
-        method: 'POST',
-        body: cloudinaryData,
-        signal: controller.signal,
-      }
-    )
+      let json = await response.json()
 
-    let json = await response.json()
-
-    let url = await json.url
+      url = await json.url
+    }
 
     data = {
       ...data,

@@ -35,11 +35,6 @@ const schema = new mongoose.Schema({
       required: false,
     },
   ],
-  datePosted: {
-    type: Date,
-    required: true,
-    default: Date.now(),
-  },
   groupId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Group',
@@ -50,6 +45,8 @@ const schema = new mongoose.Schema({
     ref: 'Announcement',
     required: false,
   },
+},  {
+  timestamps: true,
 })
 
 module.exports =

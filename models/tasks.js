@@ -134,6 +134,9 @@ const schema = new mongoose.Schema({
       required: false,
     },
   ],
+}, 
+{
+  timestamps: true,
 })
 
 module.exports =

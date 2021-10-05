@@ -36,61 +36,139 @@ export async function getServerSideProps(context) {
 
 const UserProfile = (props) => {
   const router = useRouter()
-
   const { setModalAttributes, updateData } = useContext(AppContext)
+
+  console.log(router.query.message)
 
   const [session, loading] = useSession()
 
   return (
-    <div className="flex flex-col w-full bg-WSAI-Indigo-25 text-WSAI-JetBlack">
-      <main className="flex flex-col grid-cols-1 border-r border-WSAI-Indigo-100">
-        <header className="flex items-center justify-between w-full h-[5.5rem] px-4 border-b border-WSAI-Indigo-100">
-          <h1 className="text-3xl text-WSAI-Indigo-500">Message</h1>
-          <Link href={`/${router.asPath}/new-message`}>
-            <a className="flex items-center justify-center rounded-full w-7 h-7 bg-WSAI-Indigo-500 justify-self-end">
-              <AddIcon className="fill-current w-7 h-7 text-WSAI-Indigo-25" />
+    <div className='relative flex flex-col w-full bg-WSAI-Indigo-25 text-WSAI-JetBlack'>
+      <main className='flex flex-col grid-cols-1 border-r border-WSAI-Indigo-100'>
+        <header className='flex items-center justify-between w-full h-[5.5rem] px-4 border-b border-WSAI-Indigo-100'>
+          <h1 className='text-3xl text-WSAI-Indigo-500'>Messages</h1>
+          <Link
+            href={`/messages/teacher/${router.query.teacherId}/new-message`}
+          >
+            <a className='flex items-center justify-center rounded-full w-7 h-7 bg-WSAI-Indigo-500 justify-self-end'>
+              <AddIcon className='fill-current w-7 h-7 text-WSAI-Indigo-25' />
             </a>
           </Link>
         </header>
-        <Link href="/">
-          <a className="flex items-center w-full h-32 p-2 overflow-hidden bg-indigo-200 border-b border-collapse border-WSAI-Indigo-50 gap-x-2">
-            <figure>
-              <div className="w-20 h-20 rounded-full bg-WSAI-Indigo-700"></div>
-            </figure>
-            <div className="flex flex-col justify-center">
-              <h1 className="text-sm font-bold capitalize">
-                This is a very very long name
-              </h1>
-              <p className="line-clamp-1">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum,
-                rem commodi et soluta explicabo consectetur quibusdam corporis
-                cupiditate distinctio esse eius doloribus repellendus quia
-                debitis exercitationem autem minus hic nihil suscipit non minima
-                laborum aliquid modi nemo. Architecto, quia. Aspernatur animi
-                magnam quod asperiores quam voluptatibus harum enim sit optio
-                ipsam iure ipsa ad nesciunt distinctio doloremque eaque nisi,
-                sapiente laudantium tempore. Fugit repellendus nam nesciunt
-                repudiandae iste reiciendis quis doloribus illum reprehenderit
-                commodi alias eveniet possimus architecto omnis eum dolorum
-                facere similique, beatae impedit quaerat sit, nostrum odit?
-                Dignissimos, animi. Praesentium voluptatibus, error quam illo
-                ipsam fugit maxime corrupti cupiditate culpa dolore qui
-                voluptatum et. Aut ex, provident quae iste saepe tempora
-                sapiente nesciunt omnis nemo pariatur animi esse mollitia vel?
-                Tempore iure reprehenderit mollitia voluptas! Omnis ex numquam
-                dolorem neque cumque, porro asperiores molestias consectetur, id
-                quod nisi dolore repellat! Quod doloremque quisquam similique.
-                Animi magnam repellendus culpa doloribus id nobis optio at
-                beatae dolorum deserunt, dolore esse nesciunt porro est unde
-                quaerat, blanditiis iure dolores tempora doloremque cupiditate
-                explicabo sint. Vel facere nam commodi reiciendis porro.
-                Delectus nesciunt explicabo repellat vel odio molestiae
-                voluptatibus libero ullam, a recusandae quod eligendi! Beatae
-                qui nesciunt atque earum culpa nulla?
-              </p>
-            </div>
+        {router.query.message == 'received' || router.query.message == undefined
+          ? props.userInformation.receivedMessages.map((message) => {
+              return (
+                <Link key={message._id} href={`/messages/teacher/${router.query.teacherId}/view-message/${message._id}`}>
+                  <a className='relative flex items-center w-full h-32 p-2 overflow-hidden border-b border-collapse even:bg-WSAI-Indigo-25 odd:bg-WSAI-Indigo-25 border-WSAI-Indigo-50 gap-x-2'>
+                    <h1 className='absolute top-0 mt-2 text-sm capitalize left-2 line-clamp-1'>
+                      {message.senderTeacher ? (
+                        <p>
+                          {`${message.senderTeacher.firstName} ${message.senderTeacher.lastName}`}
+                        </p>
+                      ) : (
+                        `${message.senderStudent.firstName} ${message.senderStudent.lastName}`
+                      )}
+                    </h1>
+                    <div className='relative flex flex-col items-center '>
+                      <figure className='relative overflow-hidden border-2 rounded-full w-14 h-14 border-WSAI-Indigo-400'>
+                        <Image
+                          layout='fill'
+                          src={
+                            (message.senderTeacher &&
+                              message.senderTeacher.image) ||
+                            (message.senderStudent &&
+                              message.senderStudent.image) ||
+                            '/avatar.png'
+                          }
+                          alt='sender'
+                        />
+                      </figure>
+                    </div>
+                    <div className='flex flex-col justify-center text-sm'>
+                      <p className='font-bold line-clamp-1'>
+                        <span className='font-normal'>Subject:</span>{' '}
+                        {message.subject}
+                      </p>
+                      <p className='break-all line-clamp-1'>
+                        {message.content}
+                      </p>
+                    </div>
+                  </a>
+                </Link>
+              )
+            })
+          : props.userInformation.sentMessages.map((message) => {
+              return (
+                <Link key={message._id} href={`/messages/teacher/${router.query.teacherId}/view-message/${message._id}?ref=sent`}>
+                  <a className='relative flex items-center w-full h-32 p-2 overflow-hidden border-b border-collapse even:bg-WSAI-Indigo-25 odd:bg-WSAI-Indigo-25 border-WSAI-Indigo-50 gap-x-2'>
+                    <h1 className='absolute top-0 mt-2 text-sm capitalize left-2 line-clamp-1'>
+                      {message.teacherReciepient ? (
+                        <p>
+                          {`${message.teacherReciepient.firstName} ${message.teacherReciepient.lastName}`}
+                        </p>
+                      ) : (
+                        `${message.studentReciepient.firstName} ${message.studentReciepient.lastName}`
+                      )}
+                    </h1>
+                    <div className='relative flex flex-col items-center '>
+                      <figure className='relative overflow-hidden border-2 rounded-full w-14 h-14 border-WSAI-Indigo-400'>
+                        <Image
+                          layout='fill'
+                          src={
+                            (message.teacherReciepient &&
+                              message.teacherReciepient.image) ||
+                            (message.studentReciepient &&
+                              message.studentReciepient.image) ||
+                            '/avatar.png'
+                          }
+                          alt='receiver'
+                        />
+                      </figure>
+                    </div>
+                    <div className='flex flex-col justify-center text-sm'>
+                      <p className='font-bold line-clamp-1'>
+                        <span className='font-normal'>Subject:</span>{' '}
+                        {message.subject}
+                      </p>
+                      <p className='break-all line-clamp-1'>
+                        {message.content}
+                      </p>
+                    </div>
+                  </a>
+                </Link>
+              )
+            })}
+
+        <div className='absolute bottom-0 grid w-full h-12 grid-cols-2'>
+          <a
+            onClick={() =>
+              router.replace(
+                `/messages/teacher/${router.query.teacherId}/?message=received`
+              )
+            }
+            className={`cursor-pointer flex items-center justify-center transition-colors border border-l-0 border-r-0 rounded-none shadow-inner focus:outline-none focus:ring  text-WSAI-Indigo-25 border-WSAI-Indigo-300 ${
+              router.query.message == null || router.query.message == 'received'
+                ? 'bg-WSAI-Indigo-500 font-bold'
+                : 'bg-WSAI-Indigo-200 hover:bg-WSAI-Indigo-500'
+            } `}
+          >
+            Received
           </a>
-        </Link>
+          <a
+            onClick={() =>
+              router.replace(
+                `/messages/teacher/${router.query.teacherId}/?message=sent`
+              )
+            }
+            className={`cursor-pointer flex items-center justify-center transition-colors border border-r-0 rounded-none shadow-inner focus:outline-none focus:ring  text-WSAI-Indigo-25 border-WSAI-Indigo-300 ${
+              router.query.message == 'sent'
+                ? 'bg-WSAI-Indigo-500 font-bold'
+                : 'bg-WSAI-Indigo-200 hover:bg-WSAI-Indigo-500'
+            } `}
+          >
+            Sent
+          </a>
+        </div>
       </main>
 
       {/* <main className="grid grid-cols-3">

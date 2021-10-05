@@ -104,7 +104,21 @@ const schema = new mongoose.Schema({
     type: String,
     required: false,
     trim: true,
-  }
+  },
+  receivedMessages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
+      required: false,
+    },
+  ],
+  sentMessages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
+      required: false,
+    },
+  ],
 })
 
 module.exports =
