@@ -121,15 +121,9 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
       false
     )
 
-    setModuleDetails({
-      moduleTitle: '',
-      moduleDescription: '',
-      subject: subjectId,
-      moduleQuarter: 'First Quarter',
-      isHidden: false,
-      attachedFile: '',
-      link: '',
-    })
+    resetFields()
+
+    setIsOpen(false)
   }
 
   return (
@@ -137,6 +131,7 @@ export default function AddModuleModal({ isOpen, setIsOpen, subjectId }) {
       <Dialog
         open={isOpen}
         onClose={() => {
+          resetFields()
           setIsOpen(false)
         }}
         className="fixed inset-0 z-40 flex items-center justify-center h-full overflow-y-auto"

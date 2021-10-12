@@ -39,8 +39,12 @@ const Home = (props) => {
     router.replace('/')
   }
 
+  if(loading) {
+    return ''
+  }
+
   return (
-    <div className="justify-center flex-1 w-full flexitems-center">
+    <div className="flex items-center justify-center flex-1 w-full">
       <Head>
         <title>Home</title>
       </Head>

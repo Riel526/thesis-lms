@@ -21,7 +21,12 @@ const schema = new mongoose.Schema({
     required: true,
     auto: true,
   },
-  userId: {
+  studentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: true,
+  },
+  teacherId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
     required: true,
