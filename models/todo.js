@@ -31,10 +31,10 @@ const schema = new mongoose.Schema({
     ref: 'Student',
     required: true,
   },
-  content: [{
+  content: {
     type: todoContentSchema,
     required: false,
-  }],
+  },
 })
 
 module.exports =
